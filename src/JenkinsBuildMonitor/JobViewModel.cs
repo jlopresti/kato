@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using JenkinsApiClient;
+using Jenkins.Api.Client;
 
 namespace Kato
 {

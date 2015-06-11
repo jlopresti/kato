@@ -18,7 +18,7 @@ using System.Windows.Threading;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Hardcodet.Wpf.TaskbarNotification;
-using JenkinsApiClient;
+using Jenkins.Api.Client;
 using Kato.Properties;
 
 namespace Kato
@@ -172,7 +172,7 @@ namespace Kato
 				ViewMode = kind;
 		}
 
-		public void AddServer()
+		public async void AddServer()
 		{
 			if (string.IsNullOrWhiteSpace(NewServerUrl))
 				return;
@@ -183,7 +183,7 @@ namespace Kato
 				return;
 			}
 
-			if (AddServer(NewServerUrl))
+			if (await AddServer(NewServerUrl))
 			{
 				IsAddServerUrlValid = true;
 				NewServerUrl = "";
@@ -308,7 +308,7 @@ namespace Kato
 				AddServer(serverUri);
 		}
 
-		private bool AddServer(string serverUri)
+		private async Task<bool> AddServer(string serverUri)
 		{
 			if (m_servers.Any(x => x.DomainUrl == serverUri))
 				return false;
@@ -317,7 +317,7 @@ namespace Kato
 			try
 			{
 				JenkinsClient client = new JenkinsClient(new Uri(serverUri, UriKind.Absolute));
-				Server server = client.GetJson<Server>(new Uri(serverUri));
+				Server server = await client.GetJson<Server>(new Uri(serverUri));
 
 				serverViewModel = new ServerViewModel(client, server);
 			}

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using JenkinsApiClient;
+using Jenkins.Api.Client;
 
 namespace Kato
 {

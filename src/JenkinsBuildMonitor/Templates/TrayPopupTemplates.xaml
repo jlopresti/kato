@@ -2,8 +2,8 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:kato="clr-namespace:Kato"
 					xmlns:resources="clr-namespace:Kato.Resources"
-					xmlns:jenkinsApiClient="clr-namespace:JenkinsApiClient;assembly=JenkinsApiClient"
-					xmlns:cal="http://www.caliburnproject.org">
+					xmlns:cal="http://www.caliburnproject.org"
+					xmlns:client="clr-namespace:Jenkins.Api.Client;assembly=Jenkins.Api.Client">
 
 
 	<DataTemplate DataType="{x:Type kato:JobViewModel}" x:Key="TrayJobGridItemTemplate">
@@ -44,7 +44,7 @@
 						<Image.ToolTip>
 							<ItemsControl ItemsSource="{Binding HealthReports}">
 								<ItemsControl.ItemTemplate>
-									<DataTemplate DataType="{x:Type jenkinsApiClient:HealthReport}">
+									<DataTemplate DataType="{x:Type client:HealthReport}">
 										<TextBlock Text="{Binding Description, Mode=OneTime}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
@@ -152,7 +152,7 @@
 				<Image.ToolTip>
 					<ItemsControl ItemsSource="{Binding HealthReports}">
 						<ItemsControl.ItemTemplate>
-							<DataTemplate DataType="{x:Type jenkinsApiClient:HealthReport}">
+							<DataTemplate DataType="{x:Type client:HealthReport}">
 								<TextBlock Text="{Binding Description, Mode=OneTime}" />
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>

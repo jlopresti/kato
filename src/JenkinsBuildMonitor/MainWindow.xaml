@@ -3,7 +3,6 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mui="http://firstfloorsoftware.com/ModernUI"
 		xmlns:taskbarNotification="http://www.hardcodet.net/taskbar"
-		xmlns:jenkinsApiClient="clr-namespace:JenkinsApiClient;assembly=JenkinsApiClient"
 		xmlns:kato="clr-namespace:Kato"
 		xmlns:resources="clr-namespace:Kato.Resources"
 		xmlns:cal="http://www.caliburnproject.org"

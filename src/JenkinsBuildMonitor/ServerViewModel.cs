@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
-using JenkinsApiClient;
+using Jenkins.Api.Client;
 using Newtonsoft.Json;
 
 namespace Kato
@@ -51,11 +51,11 @@ namespace Kato
 				UpdateJob(job);
 		}
 
-		private void UpdateJob(JobViewModel job)
+		private async void UpdateJob(JobViewModel job)
 		{
 			try
 			{
-				Job source = JsonConvert.DeserializeObject<Job>(m_client.GetJsonAsync<Job>(job.Path).LogErrors().Result);
+				Job source = JsonConvert.DeserializeObject<Job>(await m_client.GetJsonAsync<Job>(job.Path).LogErrors());
 
 				if (source == null)
 					return;

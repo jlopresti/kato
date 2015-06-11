@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:cal="http://www.caliburnproject.org"
-					xmlns:jenkinsApiClient="clr-namespace:JenkinsApiClient;assembly=JenkinsApiClient"
 					xmlns:src="clr-namespace:Kato"
-					xmlns:resources="clr-namespace:Kato.Resources">
+					xmlns:resources="clr-namespace:Kato.Resources"
+					xmlns:client="clr-namespace:Jenkins.Api.Client;assembly=Jenkins.Api.Client">
 
 	<DataTemplate DataType="{x:Type src:JobViewModel}" x:Key="JobListItemTemplate">
 		<Border CornerRadius="4" x:Name="MainBorder" Padding="2,2,4,0"
@@ -45,7 +45,7 @@
 					<Image.ToolTip>
 						<ItemsControl ItemsSource="{Binding HealthReports}">
 							<ItemsControl.ItemTemplate>
-								<DataTemplate DataType="{x:Type jenkinsApiClient:HealthReport}">
+								<DataTemplate DataType="{x:Type client:HealthReport}">
 									<TextBlock Text="{Binding Description, Mode=OneTime}" />
 								</DataTemplate>
 							</ItemsControl.ItemTemplate>
@@ -163,7 +163,7 @@
 						<Image.ToolTip>
 							<ItemsControl ItemsSource="{Binding HealthReports}">
 								<ItemsControl.ItemTemplate>
-									<DataTemplate DataType="{x:Type jenkinsApiClient:HealthReport}">
+									<DataTemplate DataType="{x:Type client:HealthReport}">
 										<TextBlock Text="{Binding Description, Mode=OneTime}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>

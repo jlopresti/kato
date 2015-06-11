@@ -122,9 +122,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Deployment" />
@@ -301,13 +301,13 @@
     <Resource Include="Images\headshot.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Jenkins.Api.Client\Jenkins.Api.Client.csproj">
+      <Project>{699f07b8-b2f8-400c-a49e-1560295463c6}</Project>
+      <Name>Jenkins.Api.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj">
       <Project>{9a653a28-fe46-40e8-a14f-48b0e325165d}</Project>
       <Name>FirstFloor.ModernUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JenkinsApiClient\JenkinsApiClient.csproj">
-      <Project>{93676c49-f329-4c3c-bf4e-186b36bea067}</Project>
-      <Name>JenkinsApiClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -318,10 +318,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
 </Project>

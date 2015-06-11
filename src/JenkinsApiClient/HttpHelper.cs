@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace JenkinsApiClient
 {
 	public static class HttpHelper
 	{
-		public static Task<string> GetJsonAsync(Uri path)
+		public static async Task<string> GetJsonAsync(Uri path)
 		{
 			using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
 			{
-				HttpResponseMessage result = client.GetAsync(path.PathAndQuery).Result;
+				HttpResponseMessage result = await client.GetAsync(path.PathAndQuery);
 				result.EnsureSuccessStatusCode();
-				return result.Content.ReadAsStringAsync();
+				return await result.Content.ReadAsStringAsync();
 			}
 		}
 
