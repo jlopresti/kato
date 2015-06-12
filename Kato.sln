@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstFloor.ModernUI", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rd Party", "3rd Party", "{3C980640-7C5D-4683-BAAC-8775281ABA06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jenkins.Api.Client", "Jenkins.Api.Client\Jenkins.Api.Client.csproj", "{699F07B8-B2F8-400C-A49E-1560295463C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jenkins.Api.Client", "src\Jenkins.Api.Client\Jenkins.Api.Client.csproj", "{699F07B8-B2F8-400C-A49E-1560295463C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

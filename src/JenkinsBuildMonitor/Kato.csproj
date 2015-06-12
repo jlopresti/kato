@@ -301,13 +301,13 @@
     <Resource Include="Images\headshot.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Jenkins.Api.Client\Jenkins.Api.Client.csproj">
-      <Project>{699f07b8-b2f8-400c-a49e-1560295463c6}</Project>
-      <Name>Jenkins.Api.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj">
       <Project>{9a653a28-fe46-40e8-a14f-48b0e325165d}</Project>
       <Name>FirstFloor.ModernUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jenkins.Api.Client\Jenkins.Api.Client.csproj">
+      <Project>{699f07b8-b2f8-400c-a49e-1560295463c6}</Project>
+      <Name>Jenkins.Api.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
