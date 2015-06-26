@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using Jenkins.Api.Client;
+using GalaSoft.MvvmLight.Messaging;
+using Kato.vNext.Messages;
+using Kato.vNext.Models;
+using Kato.vNext.Services;
 
 namespace Kato.vNext.ViewModel
 {
@@ -21,19 +26,12 @@ namespace Kato.vNext.ViewModel
     /// </summary>
     public class ServersViewModel : ViewModelBase
     {
-        private IList<int> _servers;
-        private bool _isModalOpened;
+        private ObservableCollection<ServerModel> _servers;
 
-        public IList<int> Servers
+        public ObservableCollection<ServerModel> Servers
         {
             get { return _servers; }
             set { Set(() => Servers, ref _servers, value); }
-        }
-
-        public bool IsModalOpened
-        {
-            get { return _isModalOpened; }
-            set { Set(() => IsModalOpened, ref _isModalOpened, value); }
         }
 
         public ICommand ShowAddServerDialogCommand { get; private set; }
@@ -43,25 +41,25 @@ namespace Kato.vNext.ViewModel
         /// </summary>
         public ServersViewModel()
         {
-            Servers = new List<int> { 1 };
+            Servers = new ObservableCollection<ServerModel>();
             ShowAddServerDialogCommand = new RelayCommand(ShowAddServerDialog);
+            Messenger.Default.Register<ServerAddedMessage>(this, OnServerAdded);
+            var data = new UserDataService().RetrieveServers();
+            foreach (var serverModel in data)
+            {
+                Servers.Add(serverModel);
+            }
         }
 
-        private async void ShowAddServerDialog()
+        private void OnServerAdded(ServerAddedMessage serverMessage)
         {
-            Servers = new List<int> { 1,2,4 };
-            IsModalOpened = !IsModalOpened;
-            try
-            {
-                JenkinsClient client = new JenkinsClient(new Uri("http://dotnet-ci.cloudapp.net/", UriKind.Absolute));
-                Server server = await client.GetJson<Server>(new Uri("http://dotnet-ci.cloudapp.net/"));
+            Servers.Add(serverMessage.Server);
+            new UserDataService().SaveData(Servers.ToList());
+        }
 
-                
-            }
-            catch (Exception)
-            {
-                
-            }
+        private void ShowAddServerDialog()
+        {
+            Messenger.Default.Send(new OpenAddServerDialogMessage());
         }
     }
 }

@@ -1,4 +1,7 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using Kato.vNext.Messages;
+using Kato.vNext.Models;
 
 namespace Kato.vNext.ViewModel
 {
@@ -16,19 +19,40 @@ namespace Kato.vNext.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private bool _isAddServerModalOpened;
+
+        public bool IsAddServerModalOpened
+        {
+            get { return _isAddServerModalOpened; }
+            set { Set(() => IsAddServerModalOpened, ref _isAddServerModalOpened, value); }
+        }
+
+        private AddServerModel _addServerModel;
+
+        public AddServerModel AddServerModel
+        {
+            get { return _addServerModel; }
+            set { Set(() => AddServerModel, ref _addServerModel, value); }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            Messenger.Default.Register<OpenAddServerDialogMessage>(this, OpenAddServerDialogRequested);
+            Messenger.Default.Register<ServerAddedMessage>(this, OnServerAdded);
+        }
+
+        private void OnServerAdded(ServerAddedMessage obj)
+        {
+            IsAddServerModalOpened = false;
+        }
+
+        private void OpenAddServerDialogRequested(OpenAddServerDialogMessage message)
+        {
+            AddServerModel = new AddServerModel();
+            IsAddServerModalOpened = true;
         }
     }
 }

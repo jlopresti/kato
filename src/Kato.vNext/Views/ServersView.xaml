@@ -23,11 +23,11 @@
                             <Border Background="{DynamicResource AccentColorBrush}" TextBlock.Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
 							CornerRadius="2 0 0 2"
 							Padding="8">
-                                <TextBlock Text="{Binding StringFormat=yyy}"  />
+                                <TextBlock Text=""  />
                             </Border>
                             <StackPanel Margin="8" Grid.Column="1" HorizontalAlignment="Right">
-                                <TextBlock Text="{Binding StringFormat=m}" FontWeight="Bold" />
-                                <TextBlock Text="{Binding StringFormat=T}" />
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding NbJobs, StringFormat={}{0} jobs}" />
                             </StackPanel>
                             <Button Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
 							Grid.Column="1" Margin="-20 0 0 0" HorizontalAlignment="Left">
@@ -56,22 +56,6 @@
                     </Canvas>
                 </Viewbox>
             </Button>
-        </Grid>
-        <controls:Flyout Header="ADD SERVERS"
-                             Position="Left" 
-                             Theme="Accent" Foreground="{StaticResource IdealForegroundColorBrush}"
-                         Background="{StaticResource AccentColorBrush}" 
-                             IsModal="True" IsOpen="{Binding IsModalOpened}">
-            <Grid Margin="10" Width="400">
-                <StackPanel>
-                    <TextBox wpf:TextField.Hint="Name" Style="{StaticResource MaterialDesignTextBox}"/>
-                    <TextBox wpf:TextField.Hint="Url" Style="{StaticResource MaterialDesignTextBox}"/>
-                    <ToggleButton/>
-                    <TextBox wpf:TextField.Hint="Login" />
-                    <TextBox wpf:TextField.Hint="Api key" />
-            <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="0 0 8 8" Content="ACCENT" Width="80" />
-                </StackPanel>
-            </Grid>
-        </controls:Flyout>
+        </Grid>        
     </Grid>
 </UserControl>

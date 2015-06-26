@@ -69,6 +69,10 @@
       <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.Data" />
@@ -95,6 +99,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\PersistedUserData.cs" />
+    <Compile Include="Messages\OpenAddServerDialogMessage.cs" />
+    <Compile Include="Messages\ServerAddedMessage.cs" />
+    <Compile Include="Models\AddServerModel.cs" />
+    <Compile Include="Models\ServerModel.cs" />
+    <Compile Include="Models\UserData.cs" />
+    <Compile Include="Services\UserDataService.cs" />
     <Compile Include="ViewModel\ServersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
