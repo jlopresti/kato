@@ -19,7 +19,7 @@
         Title="Material-MahApps-Dragablz Mash Up" Height="350" Width="525" 
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <dragablz:TabablzControl TextElement.Foreground="{DynamicResource MaterialDesignBody}" BorderThickness="0"
-                             Background="{DynamicResource MaterialDesignPaper}" Margin="0,-1,0,1" >
+                             Background="{DynamicResource MaterialDesignPaper}" Margin="0,-1,0,1" SelectionChanged="OnSelectionChanged">
 
         <TabItem Header="HOME">
             <views:HomeView />
@@ -143,8 +143,8 @@
                 </controls:Flyout.HeaderTemplate>
                 <Border Width="400" Background="{StaticResource MaterialDesignPaper}" BorderThickness="0 0 1 0" BorderBrush="{StaticResource AccentColorBrush}" DataContext="{Binding AddServerModel}">
                     <StackPanel Margin="16">
-                        <TextBox wpf:TextField.Hint="Name" Style="{StaticResource MaterialDesignTextBox}" FontSize="14" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox wpf:TextField.Hint="Url" Style="{StaticResource MaterialDesignTextBox}" FontSize="14" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox wpf:TextField.Hint="Name" Style="{StaticResource MaterialDesignTextBox}" FontSize="14" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
+                        <TextBox wpf:TextField.Hint="Url" Style="{StaticResource MaterialDesignTextBox}" FontSize="14" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
                         <Grid Margin="0 8">
                             <TextBlock Text="Require authentication ?" HorizontalAlignment="Left" FontSize="14"></TextBlock>
                             <ToggleButton HorizontalAlignment="Right" x:Name="toggleAuth" IsChecked="{Binding RequireAuthentication, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -160,10 +160,16 @@
                                     </Style.Triggers>
                                 </Style>
                             </StackPanel.Style>
-                            <TextBox wpf:TextField.Hint="Login" FontSize="14" Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox wpf:TextField.Hint="Api key" FontSize="14" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox wpf:TextField.Hint="Login" FontSize="14" Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
+                            <TextBox wpf:TextField.Hint="Api key" FontSize="14" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
                         </StackPanel>
-                        <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0 16 0 0" Width="80" Content="ADD" Command="{Binding AddCommand}"/>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <controls:ProgressRing 
+                                       IsActive="{Binding IsBusy}"
+                                       Width="20"
+                                       Height="20" />
+                        <Button  Style="{StaticResource MaterialDesignRaisedButton}" Margin="0 16 0 0" Width="80" Content="ADD" Command="{Binding AddCommand}"/>
+                            </StackPanel>
                     </StackPanel>
                 </Border>
             </controls:Flyout>

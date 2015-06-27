@@ -17,25 +17,25 @@ namespace Kato.vNext.Core
             _savedFilePathBase = savedFilePathBase;
         }
 
-        public T Open<T>()
+        public Task<T> OpenAsync<T>()
         {
             string filePath = Path.Combine(_savedFilePathBase, typeof(T).Name + ".dat");
 
             if (!File.Exists(filePath))
-                return default(T);
+                return Task.FromResult(default(T));
 
             string savedData = File.ReadAllText(filePath, Encoding.UTF8);
-            return JsonConvert.DeserializeObject<T>(savedData);
+            return Task.Run(() => JsonConvert.DeserializeObject<T>(savedData));
         }
 
-        public void Save<T>(T data)
+        public async Task SaveAsync<T>(T data)
         {
             string filePath = Path.Combine(_savedFilePathBase, typeof(T).Name + ".dat");
 
-            string serializedData = JsonConvert.SerializeObject(data);
+            string serializedData = await Task.Run(() =>JsonConvert.SerializeObject(data));
             try
             {
-                File.WriteAllText(filePath, serializedData, Encoding.UTF8);
+                await Task.Run(() => File.WriteAllText(filePath, serializedData, Encoding.UTF8));
             }
             catch (Exception e)
             {

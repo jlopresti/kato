@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -69,11 +70,16 @@ namespace Jenkins.Api.Client
 
 		readonly Uri m_baseUri;
 
-		public async Task<T> GetJson<T>(Uri uri) where T : class
+		public Task<T> GetJson<T>(Uri uri) where T : class
 		{
-			Uri apiRoute = JenkinsApiHelper.GetApiRoute(uri);
-			string members = GetMembers<T>();
-			return HttpHelper.GetObject<T>(await HttpHelper.GetJson(new Uri(apiRoute.OriginalString + "?tree=" + members, UriKind.Absolute)));
+		    return GetJson<T>(uri, CancellationToken.None);
 		}
-	}
+
+        public async Task<T> GetJson<T>(Uri uri, CancellationToken token) where T : class
+        {
+            Uri apiRoute = JenkinsApiHelper.GetApiRoute(uri);
+            string members = GetMembers<T>();
+            return await HttpHelper.GetObjectAsync<T>(await HttpHelper.GetJson(new Uri(apiRoute.OriginalString + "?tree=" + members, UriKind.Absolute), token));
+        }
+    }
 }

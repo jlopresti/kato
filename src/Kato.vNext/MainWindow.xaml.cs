@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kato.vNext.Core;
 using MahApps.Metro.Controls;
 
 namespace Kato.vNext
@@ -24,6 +25,20 @@ namespace Kato.vNext
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var fe = sender as TabControl;
+            if (fe != null && fe.SelectedItem != null && ((FrameworkElement)fe.SelectedItem).DataContext is ILazyLoader)
+            {
+                var tabContent = (FrameworkElement)((TabItem) fe.SelectedItem).Content;
+                var dc = tabContent.DataContext as ILazyLoader;
+                if (dc != null)
+                {
+                    await dc.LoadAsync();
+                }
+            }
         }
     }
 }

@@ -75,6 +75,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Runtime">
@@ -99,13 +100,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ReachableURL.cs" />
+    <Compile Include="Core\ValidatableModel.cs" />
+    <Compile Include="Core\ILazyLoader.cs" />
     <Compile Include="Core\PersistedUserData.cs" />
     <Compile Include="Messages\OpenAddServerDialogMessage.cs" />
     <Compile Include="Messages\ServerAddedMessage.cs" />
     <Compile Include="Models\AddServerModel.cs" />
     <Compile Include="Models\ServerModel.cs" />
     <Compile Include="Models\UserData.cs" />
-    <Compile Include="Services\UserDataService.cs" />
+    <Compile Include="Repositories\LocalDataRepository.cs" />
+    <Compile Include="Services\ApplicationDataService.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ServersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

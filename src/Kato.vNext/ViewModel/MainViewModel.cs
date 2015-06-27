@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Kato.vNext.Core;
 using Kato.vNext.Messages;
 using Kato.vNext.Models;
 
@@ -17,7 +19,7 @@ namespace Kato.vNext.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, ILazyLoader
     {
         private bool _isAddServerModalOpened;
 
@@ -53,6 +55,11 @@ namespace Kato.vNext.ViewModel
         {
             AddServerModel = new AddServerModel();
             IsAddServerModalOpened = true;
+        }
+
+        public Task LoadAsync()
+        {
+            return Task.FromResult(1);
         }
     }
 }

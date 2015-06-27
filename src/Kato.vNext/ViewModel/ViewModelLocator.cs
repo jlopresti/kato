@@ -14,6 +14,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using Kato.vNext.Services;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Kato.vNext.ViewModel
@@ -41,9 +42,12 @@ namespace Kato.vNext.ViewModel
             ////    // Create run time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
+            SimpleIoc.Default.Register<ApplicationDataService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ServersViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
+
         }
 
         public MainViewModel MainViewModel
@@ -59,6 +63,14 @@ namespace Kato.vNext.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<ServersViewModel>();
+            }
+        }
+
+        public SettingsViewModel SettingsViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SettingsViewModel>();
             }
         }
 
