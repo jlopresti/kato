@@ -30,6 +30,9 @@ namespace Kato.vNext
         #region ISingleInstanceApp Members
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {;
+            if (MainWindow != null)
+                MainWindow.Activate();
+
             return true;
         }
         #endregion

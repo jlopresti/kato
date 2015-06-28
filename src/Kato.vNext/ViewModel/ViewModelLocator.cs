@@ -14,6 +14,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using Kato.vNext.Core;
 using Kato.vNext.Services;
 using Microsoft.Practices.ServiceLocation;
 
@@ -43,11 +44,13 @@ namespace Kato.vNext.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
             SimpleIoc.Default.Register<ApplicationDataService>();
+            SimpleIoc.Default.Register<IWindowService>(() => new WindowService(App.Current.MainWindow));
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ServersViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
             SimpleIoc.Default.Register<JobsViewModel>();
+            SimpleIoc.Default.Register<TaskbarViewModel>();
 
         }
 
@@ -80,6 +83,14 @@ namespace Kato.vNext.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<JobsViewModel>();
+            }
+        }
+
+        public TaskbarViewModel TaskbarViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<TaskbarViewModel>();
             }
         }
 

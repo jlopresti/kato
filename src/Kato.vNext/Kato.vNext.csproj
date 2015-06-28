@@ -53,6 +53,10 @@
       <HintPath>..\..\packages\MvvmLightLibs.5.1.1.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -103,6 +107,7 @@
     <Compile Include="Core\ValidatableModel.cs" />
     <Compile Include="Core\ILazyLoader.cs" />
     <Compile Include="Core\PersistedUserData.cs" />
+    <Compile Include="Core\WindowService.cs" />
     <Compile Include="Messages\OpenAddServerDialogMessage.cs" />
     <Compile Include="Messages\ServerAddedMessage.cs" />
     <Compile Include="Models\AddServerModel.cs" />
@@ -114,6 +119,7 @@
     <Compile Include="Repositories\LocalDataRepository.cs" />
     <Compile Include="Services\ApplicationDataService.cs" />
     <Compile Include="ViewModel\JobsViewModel.cs" />
+    <Compile Include="ViewModel\TaskbarViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ServersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -197,6 +203,9 @@
       <Project>{699f07b8-b2f8-400c-a49e-1560295463c6}</Project>
       <Name>Jenkins.Api.Client</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\jenkins.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
