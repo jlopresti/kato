@@ -78,9 +78,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.ObjectModel" />
-    <Reference Include="System.Runtime">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MvvmLightLibs.5.1.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -100,6 +97,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\StatusToBuildingColorConverter.cs" />
+    <Compile Include="Converters\StatusToColorConverter.cs" />
     <Compile Include="Core\ReachableURL.cs" />
     <Compile Include="Core\ValidatableModel.cs" />
     <Compile Include="Core\ILazyLoader.cs" />
@@ -107,10 +106,14 @@
     <Compile Include="Messages\OpenAddServerDialogMessage.cs" />
     <Compile Include="Messages\ServerAddedMessage.cs" />
     <Compile Include="Models\AddServerModel.cs" />
+    <Compile Include="Models\BuildStatus.cs" />
+    <Compile Include="Models\BuildModel.cs" />
+    <Compile Include="Models\JobModel.cs" />
     <Compile Include="Models\ServerModel.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Repositories\LocalDataRepository.cs" />
     <Compile Include="Services\ApplicationDataService.cs" />
+    <Compile Include="ViewModel\JobsViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ServersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

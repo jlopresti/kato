@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kato.vNext.Models;
+using Kato.vNext.ViewModel;
 
 namespace Kato.vNext.Views
 {
@@ -23,6 +25,16 @@ namespace Kato.vNext.Views
         public HomeView()
         {
             InitializeComponent();
+        }
+
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount > 1)
+            {
+                var fe = (FrameworkElement) sender;
+                var job = (JobModel) fe.DataContext;
+                job.GoToLastBuildView();
+            }
         }
     }
 }

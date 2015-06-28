@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace Kato.vNext.Models
             set { Set(() => NbJobs, ref _nbJobs, value); }
         }
 
+        public List<JobModel> JobsSubscribed { get; private set; }
+
 
         public ServerModel(string serverName, string url, string login, string password, int nbjobs)
         {
@@ -33,6 +36,7 @@ namespace Kato.vNext.Models
             Password = password;
             NbJobs = nbjobs;
             _client = new JenkinsClient(new Uri(Url, UriKind.Absolute));
+            JobsSubscribed = new List<JobModel>();
         }
 
         public async Task RefreshAsync()
@@ -46,9 +50,9 @@ namespace Kato.vNext.Models
             try
             {
                 _cts = new CancellationTokenSource();
-                JenkinsClient client = new JenkinsClient(new Uri(Url, UriKind.Absolute));
-                Server server = await client.GetJson<Server>(new Uri(Url), _cts.Token);
+                Server server = await _client.GetJson<Server>(new Uri(Url), _cts.Token);
                 NbJobs = server.Jobs.Count();
+                _cts = null;
             }
             catch (Exception ex)
             {

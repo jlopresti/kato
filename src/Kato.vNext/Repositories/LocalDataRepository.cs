@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Kato.vNext.Core;
 using Kato.vNext.Models;
@@ -16,7 +17,7 @@ namespace Kato.vNext.Repositories
             UserData data = new UserData() { Servers = new List<SavedJenkinsServers>() };
             foreach (ServerModel server in servers)
             {
-                data.Servers.Add(new SavedJenkinsServers { Name = server.Name, Jobs = new List<SavedJob>(), Url = server.Url, Login = server.Login, Password = server.Password});
+                data.Servers.Add(new SavedJenkinsServers { Name = server.Name, Jobs = server.JobsSubscribed.Select(x => new SavedJob() { Name = x.Name, Url = x.Url }).ToList(), Url = server.Url, Login = server.Login, Password = server.Password });
             }
             return persistedData.SaveAsync(data);
         }
@@ -28,7 +29,9 @@ namespace Kato.vNext.Repositories
             var servers = new List<ServerModel>();
             foreach (var server in data.Servers)
             {
-                servers.Add(new ServerModel(server.Name, server.Url, server.Login, server.Password, 0));
+                var serverModel = new ServerModel(server.Name, server.Url, server.Login, server.Password, 0);
+                serverModel.JobsSubscribed.AddRange(server.Jobs.Select(x => new JobModel { Name = x.Name, Url = x.Url, Subscribe = true, ServerName = server.Name}));
+                servers.Add(serverModel);
             }
             return servers;
         }

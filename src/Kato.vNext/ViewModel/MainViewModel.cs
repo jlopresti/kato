@@ -1,9 +1,13 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using Kato.vNext.Core;
 using Kato.vNext.Messages;
 using Kato.vNext.Models;
+using Kato.vNext.Services;
 
 namespace Kato.vNext.ViewModel
 {
@@ -21,6 +25,7 @@ namespace Kato.vNext.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase, ILazyLoader
     {
+        private readonly ApplicationDataService _dataService;
         private bool _isAddServerModalOpened;
 
         public bool IsAddServerModalOpened
@@ -36,12 +41,19 @@ namespace Kato.vNext.ViewModel
             get { return _addServerModel; }
             set { Set(() => AddServerModel, ref _addServerModel, value); }
         }
+        private List<JobModel> _jobs;
 
+        public List<JobModel> Jobs
+        {
+            get { return _jobs; }
+            set { Set(() => Jobs, ref _jobs, value); }
+        }
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(ApplicationDataService dataService)
         {
+            _dataService = dataService;
             Messenger.Default.Register<OpenAddServerDialogMessage>(this, OpenAddServerDialogRequested);
             Messenger.Default.Register<ServerAddedMessage>(this, OnServerAdded);
         }
@@ -57,9 +69,31 @@ namespace Kato.vNext.ViewModel
             IsAddServerModalOpened = true;
         }
 
-        public Task LoadAsync()
+        public async Task LoadAsync()
         {
-            return Task.FromResult(1);
+            Jobs = await Task.Run(() => _dataService.GetSubscribedJobs());
+            if (_timer == null)
+            {
+                RefreshAsync();
+                _timer = new DispatcherTimer();
+                _timer.Interval = TimeSpan.FromSeconds(30);
+                _timer.Tick += _timer_Tick;
+                _timer.Start();
+            }
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            RefreshAsync();
+        }
+
+        private DispatcherTimer _timer;
+        private void RefreshAsync()
+        {
+            foreach (var jobs in Jobs)
+            {
+                jobs.RefreshAsync();
+            }
         }
     }
 }

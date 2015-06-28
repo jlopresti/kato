@@ -22,6 +22,7 @@ namespace Kato.vNext
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private int oldSelectedIndex = -1;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,12 +31,14 @@ namespace Kato.vNext
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var fe = sender as TabControl;
-            if (fe != null && fe.SelectedItem != null && ((FrameworkElement)fe.SelectedItem).DataContext is ILazyLoader)
+            if (fe != null && fe.SelectedItem != null && fe.SelectedIndex != oldSelectedIndex 
+                && ((FrameworkElement)fe.SelectedItem).DataContext is ILazyLoader)
             {
                 var tabContent = (FrameworkElement)((TabItem) fe.SelectedItem).Content;
                 var dc = tabContent.DataContext as ILazyLoader;
                 if (dc != null)
                 {
+                    oldSelectedIndex = fe.SelectedIndex;
                     await dc.LoadAsync();
                 }
             }

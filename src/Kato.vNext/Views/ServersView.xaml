@@ -14,7 +14,7 @@
         <Grid Margin="8 8 0 0">
             <ListBox Style="{StaticResource MaterialDesignCardsListBox}" ItemsSource="{Binding Servers}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type system:DateTime}">
+                    <DataTemplate>
                         <Grid Height="80">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60" />

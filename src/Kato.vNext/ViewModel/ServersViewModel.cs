@@ -51,12 +51,9 @@ namespace Kato.vNext.ViewModel
             Messenger.Default.Register<ServerAddedMessage>(this, OnServerAdded);
         }
 
-
-        private bool _isLoaded = false;
-
         public async Task LoadAsync()
         {
-            var servers = await _dataService.GetServersAsync();
+            var servers = await Task.Run(() => _dataService.GetServersAsync());
             Servers = new ObservableCollection<ServerModel>(servers);
             RefreshAsync();
         }

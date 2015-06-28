@@ -4,9 +4,53 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Kato.vNext.Views"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" 
+             DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Margin="8 8 0 0" Grid.Row="1">
+            <ListBox Style="{StaticResource MaterialDesignCardsListBox}" ItemsSource="{Binding Jobs}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="80" MouseDown="UIElement_OnMouseDown" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="140" />
+                            </Grid.ColumnDefinitions>
+                            <Border Background="{Binding Status, Converter={StaticResource StatusToColorConverter}}" TextBlock.Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+							CornerRadius="2 0 0 2"
+							Padding="8">
+                                <TextBlock Text=""  />
+                            </Border>
+                            <Grid Grid.Column="1">
+                                <ProgressBar Value="{Binding LastBuild.BuildPercentage, Mode=OneWay}" Minimum="0" Maximum="100"
+					Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{Binding Status, Converter={StaticResource StatusToBuildingColorConverter}}">
+                                    <ProgressBar.Style>
+                                        <Style/>
+                                    </ProgressBar.Style>
+                                </ProgressBar>
+                                <StackPanel Margin="8" HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Right" TextWrapping="Wrap" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding ServerName}" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                            <CheckBox Content="E" Style="{StaticResource MaterialDesignActionDarkCheckBox}" Grid.Column="1" Margin="-20 0 0 0" HorizontalAlignment="Left" IsChecked="{Binding Subscribe, Mode=TwoWay}" Command="{Binding JobsViewModel.SubscribeJob,Source={StaticResource Locator}}" CommandParameter="{Binding }"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
     </Grid>
 </UserControl>

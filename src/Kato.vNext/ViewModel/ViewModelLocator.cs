@@ -47,6 +47,7 @@ namespace Kato.vNext.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ServersViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
+            SimpleIoc.Default.Register<JobsViewModel>();
 
         }
 
@@ -71,6 +72,14 @@ namespace Kato.vNext.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SettingsViewModel>();
+            }
+        }
+
+        public JobsViewModel JobsViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<JobsViewModel>();
             }
         }
 
