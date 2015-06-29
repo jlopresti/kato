@@ -32,9 +32,6 @@
                             <Grid Grid.Column="1">
                                 <ProgressBar Value="{Binding LastBuild.BuildPercentage, Mode=OneWay}" Minimum="0" Maximum="100"
 					Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{Binding Status, Converter={StaticResource StatusToBuildingColorConverter}}">
-                                    <ProgressBar.Style>
-                                        <Style/>
-                                    </ProgressBar.Style>
                                 </ProgressBar>
                                 <StackPanel Margin="8" HorizontalAlignment="Right">
                                     <TextBlock Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Right" TextWrapping="Wrap" TextAlignment="Right"/>
