@@ -46,7 +46,11 @@ namespace Jenkins.Api.Client
 					subMembers = GetMembers<HealthReport>();
 				if (x.PropertyType == typeof(ServerJob[]))
 					subMembers = GetMembers<ServerJob>();
-				return LowerCaseFirstLetter(name) + (subMembers == null ? "" : "[" + subMembers + "]");
+                if (x.PropertyType == typeof(Action[]))
+                    subMembers = GetMembers<Action>();
+                if (x.PropertyType == typeof(Cause[]))
+                    subMembers = GetMembers<Cause>();
+                return LowerCaseFirstLetter(name) + (subMembers == null ? "" : "[" + subMembers + "]");
 			}));
 		}
 

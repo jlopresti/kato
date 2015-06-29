@@ -126,6 +126,7 @@ namespace Kato.vNext.Models
             JobDetail = await _client.GetJson<Job>(new Uri(Url), _cts.Token);
             JobColor = JobDetail.Color;
             LastBuild = new BuildModel(JobDetail.LastBuild);
+            await LastBuild.LoadDetails(_server);
         }
 
         private void EnsureClientInitialized()
