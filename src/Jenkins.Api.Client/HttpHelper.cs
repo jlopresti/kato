@@ -24,11 +24,14 @@ namespace Jenkins.Api.Client
             _password = password;
         }
 
-        public void SetBasicAuthHeader(HttpClient client, String userName, String userPassword)
+        public void SetBasicAuthHeader(HttpClient client)
         {
-            string authInfo = userName + ":" + userPassword;
-            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authInfo);
+            if (!string.IsNullOrEmpty(_login) && !string.IsNullOrEmpty(_password))
+            {
+                string authInfo = _login + ":" + _password;
+                authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authInfo);
+            }
         }
         public Task<string> GetJsonAsync(Uri path)
         {
@@ -39,6 +42,7 @@ namespace Jenkins.Api.Client
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
+                SetBasicAuthHeader(client);
                 HttpResponseMessage result = await client.GetAsync(path.PathAndQuery, token);
                 result.EnsureSuccessStatusCode();
                 return await result.Content.ReadAsStringAsync();
@@ -55,6 +59,7 @@ namespace Jenkins.Api.Client
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
+                SetBasicAuthHeader(client);
                 HttpResponseMessage result = await client.GetAsync(path.PathAndQuery, token);
                 result.EnsureSuccessStatusCode();
                 return await result.Content.ReadAsStringAsync();
@@ -70,6 +75,7 @@ namespace Jenkins.Api.Client
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
+                SetBasicAuthHeader(client);
                 HttpResponseMessage result = await client.GetAsync(path.PathAndQuery + "logText/progressiveText?start=" + offset, token);
                 result.EnsureSuccessStatusCode();
 
@@ -91,6 +97,7 @@ namespace Jenkins.Api.Client
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
+                SetBasicAuthHeader(client);
                 HttpResponseMessage result = await client.PostAsync(path.PathAndQuery, new StringContent(data), token);
                 result.EnsureSuccessStatusCode();
                 return await result.Content.ReadAsStringAsync();
