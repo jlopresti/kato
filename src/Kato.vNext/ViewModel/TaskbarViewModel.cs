@@ -31,17 +31,67 @@ namespace Kato.vNext.ViewModel
     {
         private readonly ApplicationDataService _dataService;
         private readonly IWindowService _windowService;
+        private readonly NotificationService _notificationService;
 
         public ICommand OpenApplicationCommand { get; private set; }
+
+        private List<JobModel> _jobs;
+
+        public List<JobModel> Jobs
+        {
+            get { return _jobs; }
+            set { Set(() => Jobs, ref _jobs, value); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public TaskbarViewModel(ApplicationDataService dataService, IWindowService windowService)
+        public TaskbarViewModel(ApplicationDataService dataService, IWindowService windowService, NotificationService notificationService)
         {
             _dataService = dataService;
             _windowService = windowService;
-            OpenApplicationCommand = new RelayCommand(OpenApplication, () => _windowService.IsMinimized() || _windowService.IsNormal());          
+            _notificationService = notificationService;
+            OpenApplicationCommand = new RelayCommand(OpenApplication, () => _windowService.IsMinimized() || _windowService.IsNormal());    
+            Messenger.Default.Register<SubscriptionNotificationMessage>(this, OnSubscriptionUpdated);
+        }
+
+        private void OnSubscriptionUpdated(SubscriptionNotificationMessage obj)
+        {
+            if (Jobs != null)
+            {
+                RemoveOldEvents(Jobs);
+            }
+
+            Jobs = obj.Jobs.ToList();          
+            AttachToEvent(Jobs);
+        }
+
+        private void RemoveOldEvents(List<JobModel> jobs)
+        {
+            foreach (var job in jobs)
+            {
+                job.StatusChanged -= Jobs_StatusChanged;
+            }
+        }
+
+        private void AttachToEvent(List<JobModel> jobs)
+        {
+            foreach (var job in jobs)
+            {
+                job.StatusChanged += Jobs_StatusChanged;
+            }
+        }
+
+        private void Jobs_StatusChanged(object sender, StatusChangedArgs args)
+        {
+            JobModel job = (JobModel)sender;
+            if(args.OldValue == BuildStatus.Unknown)
+                return;
+
+            if (args.NewValue == BuildStatus.Failed)
+                _notificationService.ShowError(job.Name, "Build " + args.NewValue);
+            else if (args.NewValue == BuildStatus.Success && args.OldValue < BuildStatus.Success)
+                _notificationService.ShowError(job.Name, "Build " + args.NewValue);
         }
 
         private void OpenApplication()

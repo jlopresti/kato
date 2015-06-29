@@ -35,6 +35,7 @@ namespace Kato.vNext.ViewModel
         private string _searchFilter;
         private string _selectedServerFilter;
         private List<JobModel> _alljobs;
+
         public ICommand SubscribeJob { get; private set; }
 
         public List<JobModel> Jobs

@@ -12,6 +12,10 @@ namespace Kato.vNext.Models
 {
     public class JobModel : ObservableObject
     {
+        public delegate void StatusChangedEvent(object sender, StatusChangedArgs args);
+
+        public event StatusChangedEvent StatusChanged;
+
         private bool _subscribe;
         private JenkinsClient _client;
         private CancellationTokenSource _cts;
@@ -30,8 +34,14 @@ namespace Kato.vNext.Models
             get { return _jobColor; }
             set
             {
-                Set(() => JobColor, ref _jobColor, value);
-                RaisePropertyChanged(() => Status);
+                if (_jobColor != value && value != null)
+                {
+                    BuildStatus oldStatus = Status;
+                    _jobColor = value;
+                    RaisePropertyChanged(() => JobColor);
+                    RaisePropertyChanged(() => Status);
+                    RaiseStatusChangedEvent(oldStatus, Status);
+                }
             }
         }
 
@@ -134,6 +144,12 @@ namespace Kato.vNext.Models
         public JobModel(ServerModel server)
         {
             _server = server;
+        }
+
+        private void RaiseStatusChangedEvent(BuildStatus oldValue, BuildStatus newValue)
+        {
+            if (StatusChanged != null)
+                StatusChanged(this, new StatusChangedArgs(oldValue, newValue));
         }
     }
 }

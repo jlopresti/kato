@@ -81,6 +81,7 @@
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -103,12 +104,17 @@
   <ItemGroup>
     <Compile Include="Converters\StatusToBuildingColorConverter.cs" />
     <Compile Include="Converters\StatusToColorConverter.cs" />
+    <Compile Include="Core\ITaskbarService.cs" />
+    <Compile Include="Core\IWindowService.cs" />
     <Compile Include="Core\ReachableURL.cs" />
+    <Compile Include="Core\UIHelper.cs" />
     <Compile Include="Core\ValidatableModel.cs" />
     <Compile Include="Core\ILazyLoader.cs" />
     <Compile Include="Core\PersistedUserData.cs" />
+    <Compile Include="Core\TaskbarService.cs" />
     <Compile Include="Core\WindowService.cs" />
     <Compile Include="Helpers\JenkinsClientFactory.cs" />
+    <Compile Include="Messages\SubscriptionNotificationMessage.cs" />
     <Compile Include="Messages\OpenAddServerDialogMessage.cs" />
     <Compile Include="Messages\ServerAddedMessage.cs" />
     <Compile Include="Models\AddServerModel.cs" />
@@ -119,7 +125,9 @@
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Repositories\LocalDataRepository.cs" />
     <Compile Include="Services\ApplicationDataService.cs" />
+    <Compile Include="Services\TaskbarService.cs" />
     <Compile Include="ViewModel\JobsViewModel.cs" />
+    <Compile Include="Models\StatusChangedArgs.cs" />
     <Compile Include="ViewModel\TaskbarViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ServersViewModel.cs" />

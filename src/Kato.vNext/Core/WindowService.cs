@@ -7,18 +7,6 @@ using System.Windows;
 
 namespace Kato.vNext.Core
 {
-    public interface IWindowService
-    {
-        void ShowWindow();
-        bool IsMinimized();
-        bool IsNormal();
-        bool IsMaximized();
-        void GoToNormal();
-        void GoToMaximized();
-        void GoToMinimized();
-        void ShowInTaskbar();
-    }
-
     public class WindowService : IWindowService
     {
         private Window _window;

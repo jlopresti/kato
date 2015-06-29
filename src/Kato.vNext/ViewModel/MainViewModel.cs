@@ -72,11 +72,12 @@ namespace Kato.vNext.ViewModel
         public async Task LoadAsync()
         {
             Jobs = await Task.Run(() => _dataService.GetSubscribedJobs());
+            Messenger.Default.Send(new SubscriptionNotificationMessage(Jobs));
             if (_timer == null)
             {
                 RefreshAsync();
                 _timer = new DispatcherTimer();
-                _timer.Interval = TimeSpan.FromSeconds(30);
+                _timer.Interval = TimeSpan.FromSeconds(10);
                 _timer.Tick += _timer_Tick;
                 _timer.Start();
             }
