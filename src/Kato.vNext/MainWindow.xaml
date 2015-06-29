@@ -17,7 +17,7 @@
         Background="{DynamicResource MaterialDesignPaper}"					  
         GlowBrush="{DynamicResource AccentColorBrush}"					  
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        Title="KATO" Height="350" Width="525" 
+        Title="KATO" Height="350" Width="525" NonActiveWindowTitleBrush="{StaticResource WindowTitleColorBrush}"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
         <dragablz:TabablzControl TextElement.Foreground="{DynamicResource MaterialDesignBody}" BorderThickness="0"
