@@ -2,20 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Jenkins.Api.Client
 {
-	public static class HttpHelper
-	{
-		public static Task<string> GetJsonAsync(Uri path)
-		{
-		    return GetJsonAsync(path, CancellationToken.None);
-		}
+    public class HttpHelper
+    {
+        private readonly string _login;
+        private readonly string _password;
+        public HttpHelper() : this(string.Empty, string.Empty)
+        {
 
-        public static async Task<string> GetJsonAsync(Uri path, CancellationToken token)
+        }
+        public HttpHelper(string login, string password)
+        {
+            _login = login;
+            _password = password;
+        }
+
+        public void SetBasicAuthHeader(HttpClient client, String userName, String userPassword)
+        {
+            string authInfo = userName + ":" + userPassword;
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authInfo);
+        }
+        public Task<string> GetJsonAsync(Uri path)
+        {
+            return GetJsonAsync(path, CancellationToken.None);
+        }
+
+        public async Task<string> GetJsonAsync(Uri path, CancellationToken token)
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
@@ -26,12 +46,12 @@ namespace Jenkins.Api.Client
         }
 
 
-        public static Task<string> GetJson(Uri path)
+        public Task<string> GetJson(Uri path)
         {
             return GetJson(path, CancellationToken.None);
         }
 
-        public static async Task<string> GetJson(Uri path, CancellationToken token)
+        public async Task<string> GetJson(Uri path, CancellationToken token)
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
@@ -41,12 +61,12 @@ namespace Jenkins.Api.Client
             }
         }
 
-        public static Task<ConsoleOutput> GetConsoleOutput(Uri path, long offset)
+        public Task<ConsoleOutput> GetConsoleOutput(Uri path, long offset)
         {
             return GetConsoleOutput(path, offset, CancellationToken.None);
         }
 
-        public static async Task<ConsoleOutput> GetConsoleOutput(Uri path, long offset , CancellationToken token)
+        public async Task<ConsoleOutput> GetConsoleOutput(Uri path, long offset, CancellationToken token)
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
@@ -62,12 +82,12 @@ namespace Jenkins.Api.Client
             }
         }
 
-        public static Task<string> PostData(Uri path, string data = "")
+        public Task<string> PostData(Uri path, string data = "")
         {
             return PostData(path, CancellationToken.None, data);
         }
 
-        public static async Task<string> PostData(Uri path, CancellationToken token, string data = "")
+        public async Task<string> PostData(Uri path, CancellationToken token, string data = "")
         {
             using (HttpClient client = new HttpClient { BaseAddress = new Uri(path.Scheme + "://" + path.Host + ":" + path.Port) })
             {
@@ -77,12 +97,12 @@ namespace Jenkins.Api.Client
             }
         }
 
-        public static Task<T> GetObjectAsync<T>(string json) where T : class
-		{
-			if (string.IsNullOrWhiteSpace(json))
-				return null;
+        public Task<T> GetObjectAsync<T>(string json) where T : class
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
 
-			return Task.Run(() => JsonConvert.DeserializeObject<T>(json));
-		}
+            return Task.Run(() => JsonConvert.DeserializeObject<T>(json));
+        }
     }
 }

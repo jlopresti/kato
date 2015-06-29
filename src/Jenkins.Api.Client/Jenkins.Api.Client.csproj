@@ -50,6 +50,7 @@
     <Compile Include="HttpHelper.cs" />
     <Compile Include="JenkinsApiHelper.cs" />
     <Compile Include="JenkinsClient.cs" />
+    <Compile Include="JenkinsCredential.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />

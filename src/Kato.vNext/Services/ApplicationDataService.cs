@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Jenkins.Api.Client;
+using Kato.vNext.Helpers;
 using Kato.vNext.Models;
 using Kato.vNext.Repositories;
 
@@ -72,10 +73,10 @@ namespace Kato.vNext.Services
                 var works = new List<Task>();
                 foreach (var savedServer in _savedServers)
                 {
-                    JenkinsClient client = new JenkinsClient(new Uri(savedServer.Url, UriKind.Absolute));
+                    JenkinsClient client = JenkinsClientFactory.CreateJenkinsClient(savedServer);
                     works.Add(client.GetJson<Server>(new Uri(savedServer.Url), _cts.Token)
                         .ContinueWith((x) => results.AddRange(x.Result.Jobs.Select(y =>
-                        new JobModel()
+                        new JobModel(savedServer)
                         {
                             Name = y.Name,
                             Url = y.Url.ToString(),
@@ -129,5 +130,7 @@ namespace Kato.vNext.Services
             await EnsureInitialize();
             return _savedServers.SelectMany(x => x.JobsSubscribed).ToList();
         }
+
+        
     }
 }

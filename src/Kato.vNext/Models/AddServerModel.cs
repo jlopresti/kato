@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
@@ -12,6 +14,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Jenkins.Api.Client;
 using Kato.vNext.Core;
+using Kato.vNext.Helpers;
 using Kato.vNext.Messages;
 
 namespace Kato.vNext.Models
@@ -54,7 +57,7 @@ namespace Kato.vNext.Models
             try
             {
                 IsBusy = true;
-                JenkinsClient client = new JenkinsClient(new Uri(Url, UriKind.Absolute));
+                JenkinsClient client = JenkinsClientFactory.CreateJenkinsClient(Url, Login, Password);
                 Server server = await client.GetJson<Server>(new Uri(Url));
                 Messenger.Default.Send<ServerAddedMessage>(new ServerAddedMessage(new ServerModel(Name, Url, Login, Password, server.Jobs.Count())));
             }
@@ -78,7 +81,7 @@ namespace Kato.vNext.Models
             }
         }
 
-        [ReachableURL]        
+        [CustomValidation(typeof(AddServerModel), "IsReacheableUrl")]
         [Required]
         public string Url
         {
@@ -91,8 +94,8 @@ namespace Kato.vNext.Models
             var server = (AddServerModel)context.ObjectInstance;
             if (server.RequireAuthentication)
             {
-                if(string.IsNullOrEmpty(server.Login) || string.IsNullOrEmpty(server.Password))
-                    return new ValidationResult("Your credentials is invalid", new List<string> {"Login", "Password"});
+                if (string.IsNullOrEmpty(server.Login) || string.IsNullOrEmpty(server.Password))
+                    return new ValidationResult("Your credentials is invalid", new List<string> { "Login", "Password" });
             }
 
             return ValidationResult.Success;
@@ -112,7 +115,7 @@ namespace Kato.vNext.Models
             set { Set(() => Login, ref _login, value); }
         }
 
-        [CustomValidation(typeof (AddServerModel), "RequireOnlyWhenAuthRequired")]
+        [CustomValidation(typeof(AddServerModel), "RequireOnlyWhenAuthRequired")]
         public string Password
         {
             get { return _password; }
@@ -125,7 +128,52 @@ namespace Kato.vNext.Models
             set { Set(() => IsBusy, ref _isBusy, value); }
         }
 
+        public ICommand AddCommand { get; private set; }
 
-        public ICommand AddCommand { get; private set; }        
+
+        private static CancellationTokenSource _token;
+        private static Regex _regex = new Regex(@"^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+        public static ValidationResult IsReacheableUrl(string value, ValidationContext context)
+        {
+            if (value == null)
+            {
+                return ValidationResult.Success;
+            }
+            if (_token != null)
+            {
+                _token.Cancel();
+                _token = null;
+            }
+            if (_regex.Match(value).Length > 0)
+            {
+                _token = new CancellationTokenSource();
+                Task<ValidationResult> isReachableTask = IsReachableURL(value, context.ObjectInstance as AddServerModel, _token.Token);
+                isReachableTask.Wait();
+                _token = null;
+                return isReachableTask.Result;
+            }
+            return new ValidationResult("URL Invalid", new List<string> {"Url"});
+        }
+
+        private static async Task<ValidationResult> IsReachableURL(string value, AddServerModel model, CancellationToken token)
+        {
+            ValidationResult isReachableURL = null;
+
+            try
+            {
+                JenkinsClient client = JenkinsClientFactory.CreateJenkinsClient(value, model.Login, model.Password);
+                Server server = await client.GetJson<Server>(new Uri(value.ToString()), token);
+                isReachableURL = ValidationResult.Success;
+            }
+            catch (TaskCanceledException ex)
+            {
+                isReachableURL = new ValidationResult("URL Invalid", new List<string> { "Url" });
+            }
+            catch (Exception e)
+            {
+                isReachableURL = new ValidationResult("Url is unreacheable", new List<string> { "Url" });
+            }
+            return isReachableURL;
+        }
     }
 }

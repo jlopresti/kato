@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Jenkins.Api.Client;
+using Kato.vNext.Helpers;
 
 namespace Kato.vNext.Models
 {
@@ -35,7 +36,7 @@ namespace Kato.vNext.Models
             Login = login;
             Password = password;
             NbJobs = nbjobs;
-            _client = new JenkinsClient(new Uri(Url, UriKind.Absolute));
+            _client = JenkinsClientFactory.CreateJenkinsClient(this);
             JobsSubscribed = new List<JobModel>();
         }
 

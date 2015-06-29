@@ -30,7 +30,7 @@ namespace Kato.vNext.Repositories
             foreach (var server in data.Servers)
             {
                 var serverModel = new ServerModel(server.Name, server.Url, server.Login, server.Password, 0);
-                serverModel.JobsSubscribed.AddRange(server.Jobs.Select(x => new JobModel { Name = x.Name, Url = x.Url, Subscribe = true, ServerName = server.Name}));
+                serverModel.JobsSubscribed.AddRange(server.Jobs.Select(x => new JobModel(serverModel) { Name = x.Name, Url = x.Url, Subscribe = true, ServerName = server.Name}));
                 servers.Add(serverModel);
             }
             return servers;

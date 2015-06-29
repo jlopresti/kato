@@ -9,12 +9,20 @@ namespace Jenkins.Api.Client
 {
 	public sealed class JenkinsClient
 	{
-		public JenkinsClient(Uri baseUri)
+	    public JenkinsCredential Credential { get; private set; }
+
+	    public JenkinsClient(Uri baseUri)
 		{
 			m_baseUri = baseUri;
+	        Credential = JenkinsCredential.Default;
 		}
 
-		public Uri BaseUri
+	    public void SetCredential(string login, string password)
+	    {
+	        Credential = new JenkinsCredential(login, password);
+	    }
+
+	    public Uri BaseUri
 		{
 			get { return m_baseUri; }
 		}
@@ -51,21 +59,21 @@ namespace Jenkins.Api.Client
 		{
 			Uri apiRoute = JenkinsApiHelper.GetApiRoute(uri);
 			string members = GetMembers<T>();
-			return HttpHelper.GetJsonAsync(new Uri(apiRoute.OriginalString + "?tree=" + members, UriKind.Absolute));
+			return new HttpHelper(Credential.Login, Credential.Password).GetJsonAsync(new Uri(apiRoute.OriginalString + "?tree=" + members, UriKind.Absolute));
 		}
 
 		public Task<string> ForceBuild(Uri jobUri)
 		{
-			return HttpHelper.PostData(new Uri(jobUri, "build"));
+			return new HttpHelper(Credential.Login, Credential.Password).PostData(new Uri(jobUri, "build"));
 		}
 
 		public Task<string> DisableJob(Uri jobUri)
 		{
-			return HttpHelper.PostData(new Uri(jobUri, "disable"));
+			return new HttpHelper(Credential.Login, Credential.Password).PostData(new Uri(jobUri, "disable"));
 		}
 		public Task<string> EnableJob(Uri jobUri)
 		{
-			return HttpHelper.PostData(new Uri(jobUri, "enable"));
+			return new HttpHelper(Credential.Login, Credential.Password).PostData(new Uri(jobUri, "enable"));
 		}
 
 		readonly Uri m_baseUri;
@@ -79,7 +87,7 @@ namespace Jenkins.Api.Client
         {
             Uri apiRoute = JenkinsApiHelper.GetApiRoute(uri);
             string members = GetMembers<T>();
-            return await HttpHelper.GetObjectAsync<T>(await HttpHelper.GetJson(new Uri(apiRoute.OriginalString + "?tree=" + members, UriKind.Absolute), token));
+            return await new HttpHelper(Credential.Login, Credential.Password).GetObjectAsync<T>(await new HttpHelper(Credential.Login, Credential.Password).GetJson(new Uri(apiRoute.OriginalString + "?tree=" + members, UriKind.Absolute), token));
         }
     }
 }

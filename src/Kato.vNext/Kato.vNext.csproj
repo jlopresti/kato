@@ -108,6 +108,7 @@
     <Compile Include="Core\ILazyLoader.cs" />
     <Compile Include="Core\PersistedUserData.cs" />
     <Compile Include="Core\WindowService.cs" />
+    <Compile Include="Helpers\JenkinsClientFactory.cs" />
     <Compile Include="Messages\OpenAddServerDialogMessage.cs" />
     <Compile Include="Messages\ServerAddedMessage.cs" />
     <Compile Include="Models\AddServerModel.cs" />

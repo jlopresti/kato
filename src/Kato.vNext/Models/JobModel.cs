@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Jenkins.Api.Client;
+using Kato.vNext.Helpers;
 
 namespace Kato.vNext.Models
 {
@@ -16,6 +17,7 @@ namespace Kato.vNext.Models
         private CancellationTokenSource _cts;
         private BuildModel _lastBuild;
         private string _jobColor;
+        private ServerModel _server;
 
         public string Name { get; set; }
         public string Url { get; set; }
@@ -119,7 +121,7 @@ namespace Kato.vNext.Models
         private void EnsureClientInitialized()
         {
             if (!string.IsNullOrEmpty(Url) && _client == null)
-                _client = new JenkinsClient(new Uri(Url));
+                _client = JenkinsClientFactory.CreateJenkinsClient(_server);
         }
 
 
@@ -127,6 +129,11 @@ namespace Kato.vNext.Models
         {
             Uri path = new Uri((JobDetail.LastBuild != null) ? JobDetail.LastBuild.Url.ToString(): Url);
             Process.Start(path.OriginalString);
+        }
+
+        public JobModel(ServerModel server)
+        {
+            _server = server;
         }
     }
 }
