@@ -19,27 +19,29 @@
             <ListBox Style="{StaticResource MaterialDesignCardsListBox}" ItemsSource="{Binding Jobs}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Height="80" MouseDown="UIElement_OnMouseDown" Background="Transparent">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
-                                <ColumnDefinition Width="140" />
-                            </Grid.ColumnDefinitions>
-                            <Border Background="{Binding Status, Converter={StaticResource StatusToColorConverter}}" TextBlock.Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                        <Viewbox Width="{Binding Value, ElementName=CardSizer}">
+                            <Grid Height="80" MouseDown="UIElement_OnMouseDown" Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="140" />
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{Binding Status, Converter={StaticResource StatusToColorConverter}}" TextBlock.Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
 							CornerRadius="2 0 0 2"
 							Padding="8">
-                                <TextBlock Text=""  />
-                            </Border>
-                            <Grid Grid.Column="1">
-                                <ProgressBar Value="{Binding LastBuild.BuildPercentage, Mode=OneWay}" Minimum="0" Maximum="100"
-					Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{Binding Status, Converter={StaticResource StatusToBuildingColorConverter}}">
-                                </ProgressBar>
-                                <StackPanel Margin="8" HorizontalAlignment="Right">
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Right" TextWrapping="Wrap" TextAlignment="Right"/>
-                                    <TextBlock Text="{Binding ServerName}" HorizontalAlignment="Right"/>
-                                </StackPanel>
+                                    <TextBlock Text=""  />
+                                </Border>
+                                <Grid Grid.Column="1">
+                                    <ProgressBar Value="{Binding LastBuild.BuildPercentage, Mode=OneWay}" Minimum="0" Maximum="100"
+					Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{Binding Status, Converter={StaticResource StatusToBuildingColorConverter}}" BorderThickness="0">
+                                    </ProgressBar>
+                                    <StackPanel Margin="8" HorizontalAlignment="Right">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Right" TextWrapping="Wrap" TextAlignment="Right"/>
+                                        <TextBlock Text="{Binding ServerName}" HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Content="E" Style="{StaticResource MaterialDesignActionDarkCheckBox}" Grid.Column="1" Margin="-20 0 0 0" HorizontalAlignment="Left" IsChecked="{Binding Subscribe, Mode=TwoWay}" Command="{Binding JobsViewModel.SubscribeJob,Source={StaticResource Locator}}" CommandParameter="{Binding }"/>
                             </Grid>
-                            <CheckBox Content="E" Style="{StaticResource MaterialDesignActionDarkCheckBox}" Grid.Column="1" Margin="-20 0 0 0" HorizontalAlignment="Left" IsChecked="{Binding Subscribe, Mode=TwoWay}" Command="{Binding JobsViewModel.SubscribeJob,Source={StaticResource Locator}}" CommandParameter="{Binding }"/>
-                        </Grid>
+                        </Viewbox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 <ListBox.ItemsPanel>
@@ -49,5 +51,6 @@
                 </ListBox.ItemsPanel>
             </ListBox>
         </Grid>
+        <Slider VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="100" Minimum="200" Maximum="700" Margin="8" Grid.RowSpan="2" x:Name="CardSizer"></Slider>
     </Grid>
 </UserControl>

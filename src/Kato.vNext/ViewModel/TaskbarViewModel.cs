@@ -91,7 +91,9 @@ namespace Kato.vNext.ViewModel
             if (args.NewValue == BuildStatus.Failed)
                 _notificationService.ShowError(job.Name, "Build " + args.NewValue);
             else if (args.NewValue == BuildStatus.Success && args.OldValue < BuildStatus.Success)
-                _notificationService.ShowError(job.Name, "Build " + args.NewValue);
+                _notificationService.ShowSuccess(job.Name, "Build " + args.NewValue);
+            else if ((args.NewValue == BuildStatus.SuccessAndBuilding || args.NewValue == BuildStatus.FailedAndBuilding) && args.NewValue != args.OldValue)
+                _notificationService.ShowInfo(job.Name, "Build started !");
         }
 
         private void OpenApplication()

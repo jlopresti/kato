@@ -102,6 +102,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Balloons\MaterialBalloon.xaml.cs">
+      <DependentUpon>MaterialBalloon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\StatusToBuildingColorConverter.cs" />
     <Compile Include="Converters\StatusToColorConverter.cs" />
     <Compile Include="Core\ITaskbarService.cs" />
@@ -125,7 +128,7 @@
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Repositories\LocalDataRepository.cs" />
     <Compile Include="Services\ApplicationDataService.cs" />
-    <Compile Include="Services\TaskbarService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="ViewModel\JobsViewModel.cs" />
     <Compile Include="Models\StatusChangedArgs.cs" />
     <Compile Include="ViewModel\TaskbarViewModel.cs" />
@@ -148,6 +151,10 @@
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Balloons\MaterialBalloon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -215,6 +222,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\jenkins.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\jenkins.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\success-jenkins.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\failed-jenkins.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
