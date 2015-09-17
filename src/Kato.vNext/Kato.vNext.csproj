@@ -116,14 +116,22 @@
     <Compile Include="Core\PersistedUserData.cs" />
     <Compile Include="Core\TaskbarService.cs" />
     <Compile Include="Core\WindowService.cs" />
+    <Compile Include="Flyouts\AddMonitoringFlyout.xaml.cs">
+      <DependentUpon>AddMonitoringFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Flyouts\AddServerFlyout.xaml.cs">
+      <DependentUpon>AddServerFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\JenkinsClientFactory.cs" />
     <Compile Include="Messages\SubscriptionNotificationMessage.cs" />
     <Compile Include="Messages\OpenAddServerDialogMessage.cs" />
     <Compile Include="Messages\ServerAddedMessage.cs" />
+    <Compile Include="Models\AddMonitoringModel.cs" />
     <Compile Include="Models\AddServerModel.cs" />
     <Compile Include="Models\BuildStatus.cs" />
     <Compile Include="Models\BuildModel.cs" />
     <Compile Include="Models\JobModel.cs" />
+    <Compile Include="Models\MonitoringServer.cs" />
     <Compile Include="Models\ServerModel.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Repositories\LocalDataRepository.cs" />
@@ -131,11 +139,17 @@
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="ViewModel\JobsViewModel.cs" />
     <Compile Include="Models\StatusChangedArgs.cs" />
+    <Compile Include="Messages\MonitoringServerAddedMessage.cs" />
+    <Compile Include="ViewModel\MonitoringViewModel.cs" />
+    <Compile Include="Messages\OpenAddMonitoringDialogMessage.cs" />
     <Compile Include="ViewModel\TaskbarViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ServersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\MonitoringView.xaml.cs">
+      <DependentUpon>MonitoringView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
@@ -156,6 +170,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Flyouts\AddMonitoringFlyout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Flyouts\AddServerFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -169,6 +191,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MonitoringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -232,6 +258,7 @@
   <ItemGroup>
     <Resource Include="Assets\failed-jenkins.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

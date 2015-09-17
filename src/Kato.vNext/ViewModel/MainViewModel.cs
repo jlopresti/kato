@@ -34,12 +34,28 @@ namespace Kato.vNext.ViewModel
             set { Set(() => IsAddServerModalOpened, ref _isAddServerModalOpened, value); }
         }
 
+        private bool _isAddMonitoringModalOpened;
+
+        public bool IsAddMonitoringModalOpened
+        {
+            get { return _isAddMonitoringModalOpened; }
+            set { Set(() => IsAddMonitoringModalOpened, ref _isAddMonitoringModalOpened, value); }
+        }
+
         private AddServerModel _addServerModel;
 
         public AddServerModel AddServerModel
         {
             get { return _addServerModel; }
             set { Set(() => AddServerModel, ref _addServerModel, value); }
+        }
+
+        private AddMonitoringModel _addMonitoringModel;
+
+        public AddMonitoringModel AddMonitoringModel
+        {
+            get { return _addMonitoringModel; }
+            set { Set(() => AddMonitoringModel, ref _addMonitoringModel, value); }
         }
         private List<JobModel> _jobs;
 
@@ -55,12 +71,21 @@ namespace Kato.vNext.ViewModel
         {
             _dataService = dataService;
             Messenger.Default.Register<OpenAddServerDialogMessage>(this, OpenAddServerDialogRequested);
-            Messenger.Default.Register<ServerAddedMessage>(this, OnServerAdded);
+            Messenger.Default.Register<OpenAddMonitoringDialogMessage>(this, OpenAddMonitoringDialogRequested);
+            Messenger.Default.Register<ServerAddedMessage>(this, CloseDialog);
+            Messenger.Default.Register<MonitoringServerAddedMessage>(this, CloseDialog);
         }
 
-        private void OnServerAdded(ServerAddedMessage obj)
+        private void OpenAddMonitoringDialogRequested(OpenAddMonitoringDialogMessage obj)
+        {
+            AddMonitoringModel = new AddMonitoringModel();
+            IsAddMonitoringModalOpened = true;
+        }
+
+        private void CloseDialog(object obj)
         {
             IsAddServerModalOpened = false;
+            IsAddMonitoringModalOpened = false;
         }
 
         private void OpenAddServerDialogRequested(OpenAddServerDialogMessage message)

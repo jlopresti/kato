@@ -22,17 +22,17 @@ namespace Kato.vNext.Services
 
         public void ShowError(string serverName, string message)
         {
-            _service.ShowCustomBalloon(new MaterialBalloon(new MaterialBalloonModel() {Title = serverName, Body = message, Icon = "/Assets/failed-jenkins.png"}), PopupAnimation.Slide, 4000);
+            _service.ShowCustomBalloon(new MaterialBalloon(new MaterialBalloonModel() {Title = serverName, Body = message, Icon = "/Assets/failed-jenkins.png"}), PopupAnimation.Slide, null);
         }
 
         public void ShowInfo(string serverName, string message)
         {
-            _service.ShowCustomBalloon(new MaterialBalloon(new MaterialBalloonModel() { Title = serverName, Body = message, Icon = "/Assets/jenkins.png" }), PopupAnimation.Slide, 4000);
+            _service.ShowCustomBalloon(new MaterialBalloon(new MaterialBalloonModel() { Title = serverName, Body = message, Icon = "/Assets/jenkins.png" }), PopupAnimation.Slide, null);
         }
 
         public void ShowSuccess(string serverName, string message)
         {
-            _service.ShowCustomBalloon(new MaterialBalloon(new MaterialBalloonModel() { Title = serverName, Body = message, Icon = "/Assets/success-jenkins.png" }), PopupAnimation.Slide, 4000);
+            _service.ShowCustomBalloon(new MaterialBalloon(new MaterialBalloonModel() { Title = serverName, Body = message, Icon = "/Assets/success-jenkins.png" }), PopupAnimation.Slide, null);
         }
     }
 }

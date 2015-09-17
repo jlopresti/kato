@@ -54,6 +54,7 @@ namespace Kato.vNext.ViewModel
             SimpleIoc.Default.Register<SettingsViewModel>();
             SimpleIoc.Default.Register<JobsViewModel>();
             SimpleIoc.Default.Register<TaskbarViewModel>();
+            SimpleIoc.Default.Register<MonitoringViewModel>();
 
         }
 
@@ -94,6 +95,14 @@ namespace Kato.vNext.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<TaskbarViewModel>();
+            }
+        }
+
+        public MonitoringViewModel MonitoringViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MonitoringViewModel>();
             }
         }
 

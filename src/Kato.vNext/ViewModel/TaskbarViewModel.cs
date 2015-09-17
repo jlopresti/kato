@@ -85,7 +85,7 @@ namespace Kato.vNext.ViewModel
         private void Jobs_StatusChanged(object sender, StatusChangedArgs args)
         {
             JobModel job = (JobModel)sender;
-            if(args.OldValue == BuildStatus.Unknown)
+            if (args.OldValue == BuildStatus.Unknown)
                 return;
 
             if (args.NewValue == BuildStatus.Failed)

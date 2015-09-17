@@ -8,5 +8,7 @@ namespace Kato.vNext.Core
     {
         void ShowStandardBalloon(string title, string message, BalloonIcon icon);
         void ShowCustomBalloon(UIElement balloon, PopupAnimation animation, int? timeout = null);
+        void CloseCustomBalloon();
+        void ResetCustomBalloonTimer();
     }
 }

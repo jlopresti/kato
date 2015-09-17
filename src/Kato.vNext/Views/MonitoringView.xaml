@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="Kato.vNext.Views.MonitoringView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kato.vNext.Views"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" 
+             DataContext="{Binding MonitoringViewModel, Source={StaticResource Locator}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Margin="8 8 0 0" Grid.Row="1">
+            <ListBox Style="{StaticResource MaterialDesignCardsListBox}" ItemsSource="{Binding Websites}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Viewbox Width="{Binding Value, ElementName=CardSizer}">
+                            <Grid Height="80" Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="140" />
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{Binding Status, Converter={StaticResource StatusToColorConverter}}" TextBlock.Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+							CornerRadius="2 0 0 2"
+							Padding="8">
+                                    <TextBlock Text=""  />
+                                </Border>
+                                <Grid Grid.Column="1">
+                                    <StackPanel Margin="8" HorizontalAlignment="Right">
+                                        <TextBlock Text="{Binding WebsiteName}" FontWeight="Bold" HorizontalAlignment="Right" TextWrapping="Wrap" TextAlignment="Right"/>
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Content="E" Style="{StaticResource MaterialDesignActionDarkCheckBox}" Grid.Column="1" Margin="-20 0 0 0" HorizontalAlignment="Left" />
+                            </Grid>
+                        </Viewbox>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
+        <Button Style="{StaticResource MaterialDesignFloatingActionAccentButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                Background="{DynamicResource AccentColorBrush}"
+                BorderBrush="{DynamicResource AccentColorBrush}" Grid.RowSpan="2"
+                Margin="16 16 24 16" Command="{Binding ShowAddMonitoringDialogCommand}">
+                <Viewbox Width="30" Height="30">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="White" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
+        <Slider VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="100" Minimum="200" Maximum="700" Margin="8" Grid.RowSpan="2" x:Name="CardSizer"></Slider>
+    </Grid>
+</UserControl>

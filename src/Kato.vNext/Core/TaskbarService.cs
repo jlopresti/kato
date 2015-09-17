@@ -37,5 +37,15 @@ namespace Kato.vNext.Core
                 _taskbar.Value.ShowCustomBalloon(balloon, animation, timeout);
             }
         }
+
+        public void CloseCustomBalloon()
+        {
+            _taskbar.Value.CloseBalloon();
+        }
+
+        public void ResetCustomBalloonTimer()
+        {
+            _taskbar.Value.ResetBalloonCloseTimer();
+        }
     }
 }

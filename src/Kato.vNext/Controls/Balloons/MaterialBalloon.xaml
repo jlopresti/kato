@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
               d:DesignWidth="300">
-    <Grid Margin="8">
+    <Border Margin="8" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" x:Name="Grid" Background="Transparent" BorderThickness="1" BorderBrush="{StaticResource AccentColorBrush}">
         <StackPanel>
             <Grid Background="{StaticResource MaterialDesignPaper}" Width="280"  MinHeight="80">
                 <Grid.ColumnDefinitions>
@@ -24,5 +24,5 @@
                 </StackPanel>
             </Grid>
         </StackPanel>
-    </Grid>
+    </Border>
 </UserControl>

@@ -11,6 +11,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:actions="clr-namespace:MahApps.Metro.Actions;assembly=MahApps.Metro"
         xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:flyouts="clr-namespace:Kato.vNext.Flyouts"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
 	    WindowTransitionsEnabled="False"
@@ -32,6 +33,9 @@
             <TabItem Header="SERVERS">
                 <views:ServersView x:Name="serversView"/>
             </TabItem>
+            <TabItem Header="MONITORING">
+                <views:MonitoringView/>
+            </TabItem>
             <TabItem Header="SETTINGS">
                 <views:SettingsView/>
             </TabItem>
@@ -44,144 +48,9 @@
             />
     </Grid>
     <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl x:Name="flyoutsControl">
-            <controls:Flyout Header="ADD SERVERS"
-                             Position="Left" 
-                             Theme="Accent"
-                             IsModal="True" Background="{StaticResource AccentColorBrush}" Foreground="Black"
-                             IsOpen="{Binding IsAddServerModalOpened}" >
-                <controls:Flyout.HeaderTemplate>
-                    <DataTemplate>
-                        <DockPanel x:Name="dpHeader"
-                   Margin="10,25,10,10"
-                   VerticalAlignment="Center"
-                   LastChildFill="True">
-                            <Button x:Name="nav"
-                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Flyout}}, Path=CloseCommand, Mode=OneWay}"
-                    DockPanel.Dock="Left"
-                    Style="{DynamicResource MetroCircleButtonStyle}"
-                                    BorderBrush="White"
-                    Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Flyout}}, Path=CloseButtonVisibility}"
-                    Height="40"
-                    Width="40"
-                    FontFamily="Segoe UI Symbol"
-                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Flyout}}, Path=Foreground}"
-                    FontSize="16"
-                    VerticalAlignment="Bottom">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <actions:SetFlyoutOpenAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Flyout}}}"
-                                                     Value="False" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <Rectangle Width="20"
-                           Height="15"
-                           Fill="White">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Stretch="Fill">
-                                            <VisualBrush.Visual>
-                                                <Canvas Width="48"
-                                        Height="48"
-                                        Clip="F1 M 0,0L 48,0L 48,48L 0,48L 0,0"
-                                        UseLayoutRounding="False">
-                                                    <Path Width="25"
-                                          Height="18"
-                                          Canvas.Left="12"
-                                          Canvas.Top="15"
-                                          Stretch="Fill"
-                                          Fill="Black"
-                                          Data="F1 M 12,22L 12,26L 28.25,26L 21,33L 27.5,33L 37,24L 27.5,15L 21,15L 28.25,22L 12,22 Z " />
-                                                </Canvas>
-                                            </VisualBrush.Visual>
-                                        </VisualBrush>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
-                            </Button>
-                            <TextBlock Text="{Binding}"
-                       x:Name="PART_BackButton"
-                       Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Flyout}}, Path=TitleVisibility}"
-                       FontSize="{StaticResource FlyoutHeaderFontSize}"
-                       Margin="15,0,0,0"
-                       VerticalAlignment="Center" Foreground="White" />
-                        </DockPanel>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type controls:Flyout}}}"
-                         Value="Left">
-                                <Setter TargetName="nav"
-                        Property="DockPanel.Dock"
-                        Value="Right" />
-                                <Setter TargetName="PART_BackButton"
-                        Property="TextAlignment"
-                        Value="Right" />
-                                <Setter TargetName="PART_BackButton"
-                        Property="Margin"
-                        Value="0,0,15,0" />
-                                <Setter TargetName="nav"
-                        Property="LayoutTransform">
-                                    <Setter.Value>
-                                        <ScaleTransform ScaleX="-1" />
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type controls:Flyout}}}"
-                         Value="Top">
-                                <Setter TargetName="dpHeader"
-                        Property="Margin"
-                        Value="10" />
-                                <Setter TargetName="nav"
-                        Property="LayoutTransform">
-                                    <Setter.Value>
-                                        <RotateTransform Angle="-90" />
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type controls:Flyout}}}"
-                         Value="Bottom">
-                                <Setter TargetName="dpHeader"
-                        Property="Margin"
-                        Value="10" />
-                                <Setter TargetName="nav"
-                        Property="LayoutTransform">
-                                    <Setter.Value>
-                                        <RotateTransform Angle="90" />
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </controls:Flyout.HeaderTemplate>
-                <Border Width="400" Background="{StaticResource MaterialDesignPaper}" BorderThickness="0 0 1 0" BorderBrush="{StaticResource AccentColorBrush}" DataContext="{Binding AddServerModel}">
-                    <StackPanel Margin="16">
-                        <TextBox wpf:TextField.Hint="Name" Style="{StaticResource MaterialDesignTextBox}" FontSize="14" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
-                        <TextBox wpf:TextField.Hint="Url" Style="{StaticResource MaterialDesignTextBox}" FontSize="14" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
-                        <Grid Margin="0 8">
-                            <TextBlock Text="Require authentication ?" HorizontalAlignment="Left" FontSize="14"></TextBlock>
-                            <ToggleButton HorizontalAlignment="Right" x:Name="toggleAuth" IsChecked="{Binding RequireAuthentication, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
-                        <StackPanel x:Name="panel">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsChecked, ElementName=toggleAuth}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
-                            <TextBox wpf:TextField.Hint="Login" FontSize="14" Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
-                            <TextBox wpf:TextField.Hint="Api key" FontSize="14" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=true, NotifyOnValidationError=true}" Margin="0 8"/>
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <controls:ProgressRing 
-                                       IsActive="{Binding IsBusy}"
-                                       Width="20"
-                                       Height="20" />
-                            <Button  Style="{StaticResource MaterialDesignRaisedButton}" Margin="0 16 0 0" Width="80" Content="ADD" Command="{Binding AddCommand}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </controls:Flyout>
+        <controls:FlyoutsControl x:Name="flyoutsControl" >
+            <flyouts:AddServerFlyout/>
+            <flyouts:AddMonitoringFlyout/>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 </controls:MetroWindow>
